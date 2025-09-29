@@ -72,4 +72,32 @@ public class UserDao {
         }
         return userList;
     }
+
+    public boolean deleteUser(int id) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        boolean isDelete = false;
+        try {
+            // 获取数据库连接
+            conn = ConnectionManager.getConnection();
+            // 定义SQL字符串，用于删除用户
+            String strSQL = "DELETE FROM t_list WHERE id = ?";
+            // 创建预备语句对象
+            pstmt = conn.prepareStatement(strSQL);
+            // 设置SQL语句中的参数值
+            pstmt.setInt(1, id);
+            // 执行删除操作
+            int affectedRows = pstmt.executeUpdate();
+            // 如果受影响的行数为1，则表示成功删除了一条记录
+            if (affectedRows == 1) {
+                isDelete = true;
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            // 关闭数据库连接
+            ConnectionManager.closeConnection(conn);
+        }
+        return isDelete;
+    }
 }

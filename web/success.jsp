@@ -15,7 +15,11 @@
             for (UserInfo user : userList) {
                 String gender = user.getSex() == 1 ? "男" : "女";
     %>
-    <li><%= user.getUsername() %> - <%= user.getAddress() %> - <%= user.getPhone() %> - <%= gender %></li>
+    <li>
+        <%= user.getUsername() %> - <%= user.getAddress() %> - <%= user.getPhone() %> - <%= gender %>
+        <%-- 添加删除链接 --%>
+        <a href="deleteUser?id=<%= user.getId() %>" style="text-decoration: none;" onclick="return confirm('确定要删除该用户吗？')">删除</a>
+    </li>
     <%
             }
         }
