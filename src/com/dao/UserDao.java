@@ -100,4 +100,35 @@ public class UserDao {
         }
         return isDelete;
     }
+
+    // 将这个方法添加到 UserDao.java 中
+    public boolean addUser(UserInfo userInfo) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        boolean isAdd = false;
+        try {
+            // 获取数据库连接
+            conn = ConnectionManager.getConnection();
+            // 定义SQL字符串，用于插入新用户
+            String strSQL = "INSERT INTO t_list (username, address, phone, sex) VALUES (?, ?, ?, ?)";
+            // 创建预备语句对象
+            pstmt = conn.prepareStatement(strSQL);
+            // 设置占位符的值
+            pstmt.setString(1, userInfo.getUsername());
+            pstmt.setString(2, userInfo.getAddress());
+            pstmt.setString(3, userInfo.getPhone());
+            pstmt.setInt(4, userInfo.getSex());
+            // 执行插入操作
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 1) {
+                isAdd = true;
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            // 关闭数据库连接
+            ConnectionManager.closeConnection(conn);
+        }
+        return isAdd;
+    }
 }
